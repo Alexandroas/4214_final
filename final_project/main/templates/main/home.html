@@ -1,0 +1,99 @@
+{% extends "main/header.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
+
+
+<div class="container">
+    <h3 class="text-center" style="margin=10px">WELCOME TO MY STORE!</h3> <br>
+    <p> 
+        Welcome to our store! We pride ourselves on offering a wide range of high-quality products to suit your needs.
+        From trendy accessories to essential everyday items, we strive to provide the best shopping experience.
+        Explore our collection and discover the perfect items that fit your style and preferences.
+        Our dedicated team ensures top-notch service and satisfaction for every customer.
+        Thank you for choosing us for your shopping needs!
+    </p>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 text-center" style="width=20%">
+          <h2>Great prices!</h2>
+          <p>Discover unbeatable deals! Our store offers incredible prices on a wide range of products. 
+            From everyday essentials to exclusive items, we strive to provide the best value for your money. 
+            Enjoy fantastic discounts and special offers that make shopping a delight. 
+            Find what you need at prices that fit your budget</p>
+        </div>
+        <div class="col-md-6 text-center" style="width=20%">
+          <h2 >Fast delivery!</h2>
+          <p>"Get your items swiftly! 
+            Experience lightning-fast delivery services designed for your convenience. 
+            We understand the importance of receiving your purchases promptly. 
+            With our streamlined delivery process, your orders will arrive at your doorstep in no time. 
+            Trust us to deliver your goods quickly and reliably, ensuring a seamless shopping experience.</p>
+    </div>
+</div>
+
+<div class="container" id="product_container">
+    <h1 class="text-center">Products</h1>
+    <div class="row">
+        {% for product in products %}
+        <a href="{% url 'products' product_id=product.id %}" class="no-link-highlight">   
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if product.image %}
+                        <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <!-- Display a placeholder image or text if no image is available -->
+                        <span>No Image Available</span>
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <h6 class="card-title">{{ product.category }}</h6>
+                        <p class="card-text">{{ product.price }}€</p>
+                    </a>
+                        <!-- Add any other product details you want to display -->
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination links -->
+<div class="pagination d-flex justify-content-center">
+    <div class="pagination" style="margin=10px">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1" class="btn btn-primary"> &laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+
+            {% if products.has_next %}
+                <a href="?page={{ products.paginator.num_pages }}" class="btn btn-primary">last &raquo;</a>
+                <a href="?page={{ products.next_page_number }}" class="btn btn-primary">next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+<div class="current-page">
+    <p class="text-center">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+    </p>
+</div>
+
+<!-- ... (the rest of your code) ... -->
+
+
+<div class="container" style="margin=10px">
+    <h1 class="text-center"> Thank you for visiting our store! </h1>
+    <p> We want to express our sincere gratitude for visiting our store.
+        It has been our pleasure assisting you today.
+        Your support means the world to us.
+        As you leave, please remember that your satisfaction is our priority.
+        We hope your experience was enjoyable, and we eagerly anticipate seeing you again soon.
+        Thank you for choosing us; your presence is always valued. Farewell, and have a wonderful day!</p>
+</div>
+{% endblock content %}

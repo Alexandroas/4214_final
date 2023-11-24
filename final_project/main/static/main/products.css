@@ -1,0 +1,23 @@
+.product-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    max-width: 40%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    /* Add more styles as needed */
+}
+.card {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/007/423/325/original/white-gradient-stripes-wallpaper-white-and-grey-line-diagonal-background-empty-dynamic-minimal-line-pattern-blank-light-gray-futuristic-linear-banner-illustration-vector.jpg");
+    width: 80%;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+.card-body {
+    text-decoration: none;
+}
+

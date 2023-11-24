@@ -1,0 +1,26 @@
+{% extends "main/header.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
+<!-- product_detail.html -->
+<h1>Product details </h1>
+
+<div class="col-md-4 mb-4">
+    <div class="card">
+        {% if product.image %}
+            <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <!-- Display a placeholder image or text if no image is available -->
+            <span>No Image Available</span>
+        {% endif %}
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <h6 class="card-title">{{ product.category }}</h6>
+            <p class="card-text">{{product.description|safe}} </p>
+            <p class="card-text">${{ product.price }}</p>
+        </a>
+            <!-- Add any other product details you want to display -->
+        </div>
+    </div>
+<!-- Add more product details as needed -->
+{%endblock%}
