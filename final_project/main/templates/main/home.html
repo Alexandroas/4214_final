@@ -1,0 +1,253 @@
+{% extends "main/header.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
+
+
+<div class="container">
+    <h3 class="text-center" style="margin:10px">WELCOME TO MY STORE!</h3> <br>
+    <p> 
+        Welcome to our store! We pride ourselves on offering a wide range of high-quality products to suit your needs.
+        From trendy accessories to essential everyday items, we strive to provide the best shopping experience.
+        Explore our collection and discover the perfect items that fit your style and preferences.
+        Our dedicated team ensures top-notch service and satisfaction for every customer.
+        Thank you for choosing us for your shopping needs!
+    </p>
+</div>
+<div class="container1">
+    <div class="row">
+        <div class="col-md-6 text-center" style="width:20%">
+          <h2>Great prices!</h2>
+          <p>Discover unbeatable deals! Our store offers incredible prices on a wide range of products. 
+            From everyday essentials to exclusive items, we strive to provide the best value for your money. 
+            Enjoy fantastic discounts and special offers that make shopping a delight. 
+            Find what you need at prices that fit your budget</p>
+        </div>
+        <div class="col-md-6 text-center" style="width:20%">
+          <h2 >Fast delivery!</h2>
+          <p>"Get your items swiftly! 
+            Experience lightning-fast delivery services designed for your convenience. 
+            We understand the importance of receiving your purchases promptly. 
+            With our streamlined delivery process, your orders will arrive at your doorstep in no time. 
+            Trust us to deliver your goods quickly and reliably, ensuring a seamless shopping experience.</p>
+    </div>
+</div>
+
+<div class="container1" id="filteredProductsContainer">
+    <h1 class="text-center">Products</h1>
+    <hr class="solid"></hr>
+    <div id="filteredProductsContainer">
+    <div class="row">
+        {% for product in products %}
+        <a href="{% url 'products' product_id=product.id %}" id="noneall" class="no-link-highlight">   
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if product.image %}
+                    <div class="imgBox">
+                        <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </div>
+                    {% else %}
+                        <!-- Display a placeholder image or text if no image is available -->
+                        <span>No Image Available</span>
+                    {% endif %}
+                    <div class="contentBox text-center ">
+                        <h5 class="card-title">{{product.subcategory}} {{product.name }}</h5>
+                        <h6 class="card-title">{{ product.category }}</h6>
+                        <p class="card-text">{{ product.price }}€</p>
+                    </a>
+                        {% if user.is_authenticated %}
+                        <form method="post" action="/rate_product/">
+                            {% csrf_token %}
+                        <div class="rating-stars">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                            <!-- Add more stars -->
+                            <!--<input type="submit" value="Submit rating"> -->
+                        </div>
+                    </form>
+                    {% else %}
+                        <p>Login to rate this product</p>
+                    {% endif %}
+                          
+                        <!-- Add any other product details you want to display -->
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</div>
+<!-- product_list.html -->
+
+<form id="filter-form">
+    <label for="category">Category:</label>
+    <select name="category" id="category">
+        <option value="">All Categories</option>
+    </select>
+
+    <label for="subcategory">Subcategory:</label>
+    <select name="subcategory" id="subcategory">
+        <option value="">All Subcategories</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<div id="products-list">
+    <!-- Product list will be dynamically updated here -->
+</div>
+
+<!-- Pagination links -->
+<div class="pagination d-flex justify-content-center">
+    <div class="pagination" style="margin:10px">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1" class="btn btn-primary"> &laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}" class="btn btn-primary">previous</a>
+            {% endif %}
+
+            {% if products.has_next %}
+                <a href="?page={{ products.paginator.num_pages }}" class="btn btn-primary">last &raquo;</a>
+                <a href="?page={{ products.next_page_number }}" class="btn btn-primary">next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+<div class="current-page">
+    <p class="text-center">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+    </p>
+</div>
+
+<!-- ... (the rest of your code) ... -->
+
+
+<div class="container" style="margin:10px">
+    <h1 class="text-center"> Thank you for visiting our store! </h1>
+    <p> We want to express our sincere gratitude for visiting our store.
+        It has been our pleasure assisting you today.
+        Your support means the world to us.
+        As you leave, please remember that your satisfaction is our priority.
+        We hope your experience was enjoyable, and we eagerly anticipate seeing you again soon.
+        Thank you for choosing us; your presence is always valued. Farewell, and have a wonderful day!</p>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Function to fetch categories and subcategories
+        function updatePaginationLinks() {
+            // Reattach event listeners for pagination links
+            $('#pagination-links .page-link').on('click', function(e) {
+                e.preventDefault();
+                var pageUrl = $(this).attr('href');
+                fetchProducts(pageUrl); // Call a function to fetch products based on the URL
+            });
+        }
+
+        function fetchCategoriesAndSubcategories() {
+            $.ajax({
+                url: "{% url 'get_categories_and_subcategories' %}",
+                type: "GET",
+                success: function(response) {
+                    // Populate categories dropdown
+                    response.categories.forEach(function(category) {
+                        $('#category').append($('<option>', {
+                            value: category.id,
+                            text: category.name
+                        }));
+                    });
+    
+                    // Populate subcategories dropdown
+                    response.subcategories.forEach(function(subcategory) {
+                        $('#subcategory').append($('<option>', {
+                            value: subcategory.id,
+                            text: subcategory.name
+                        }));
+                    });
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(errmsg);
+                    // Handle error if necessary
+                }
+            });
+        }
+        function filterProducts(formData) {
+            $.ajax({
+                url: "{% url 'filter_products' %}",
+                type: "GET",
+                data: formData,
+                success: function(response) {
+                    var filteredProductsContainer = $('#filteredProductsContainer');
+                    filteredProductsContainer.empty(); // Clear previous products in the container
+                
+                    // Create and append product cards to the existing container
+                    response.products.forEach(function(product) {
+                        var productCard =
+                        '<div class="col-md-4 mb-4">' + 
+                            '<div class="card h-100">' +
+                                '<div class= "imgBox">'+
+                            (product.image_url ? '<img class="card-img-top product-image" src="' + product.image_url + '" alt="' + product.name + '">' : '<span>No Image Available</span>') +
+                                    '</div>'+
+                            '<div class="contentBox text-center">' +
+                            '<h5 class="card-title">' + product.subcategory + ' ' + product.name + '</h5>' +
+                            '<h6 class="card-title">' + product.category + '</h6>' +
+                            '<p class="card-text">' + product.price + '€</p>' +
+                            
+                            '</div></div></div>';
+                
+                        filteredProductsContainer.append(productCard);
+                    });
+                },
+                
+                error: function(xhr, errmsg, err) {
+                    console.log(errmsg);
+                    // Handle error if necessary
+                }
+            });
+        }
+        
+    
+        fetchCategoriesAndSubcategories(); // Fetch categories and subcategories on page load
+    
+        $('#filter-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+    
+            var formData = $(this).serialize();
+            filterProducts(formData); // Call the function to filter products
+        });
+        $('#pagination-links').html(response.pagination_html);
+
+            // Reinitialize event listeners for pagination links
+            updatePaginationLinks();
+    });
+    $('.rating-stars .star').on('click', function() {
+        var value = $(this).data('value');
+        var productId = '{{ product.id }}';  // Pass the product ID here
+        var csrfToken = '{{ csrf_token }}';
+        $.ajax({
+            url: '/rate-product/',  // Replace with your rating view URL
+            method: 'POST',
+            data: {
+                'product_id': productId,
+                'stars': value
+            },
+            success: function(response) {
+                // Handle success (e.g., update UI)
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(errmsg);
+                // Handle error if necessary
+            }
+        });
+    });
+    </script>
+{% endblock content %}

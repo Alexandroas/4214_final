@@ -1,0 +1,40 @@
+<!-- product_card.html -->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
+<a href="{% url 'products' product_id=product.id %}" id="noneall" class="no-link-highlight">   
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if product.image %}
+            <div class="imgBox">
+                <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            {% else %}
+                <!-- Display a placeholder image or text if no image is available -->
+                <span>No Image Available</span>
+            {% endif %}
+            <div class="contentBox text-center">
+                <h5 class="card-title">{{ product.subcategory }} {{ product.name }}</h5>
+                <h6 class="card-title">{{ product.category }}</h6>
+                <p class="card-text">{{ product.price }}€</p>
+                <!-- Add your rating stars and login message here -->
+                {% if user.is_authenticated %}
+                <form method="post" action="/rate-product/">
+                    {% csrf_token %}
+                    <div class="rating-stars">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                        <!-- Add more stars -->
+                        <!--<input type="submit" value="Submit rating"> -->
+                    </div>
+                </form>
+                {% else %}
+                    <p>Login to rate this product</p>
+                {% endif %}
+                <!-- Add any other product details you want to display -->
+            </div>
+        </div>
+    </div>
+</a>

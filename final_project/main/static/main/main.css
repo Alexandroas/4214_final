@@ -1,0 +1,58 @@
+:root{
+    --navbarcolor:#313131;
+    --footerColor:#313131;
+}
+
+.hr {
+    color: #8d6060;
+    width: 5px;
+    height: 5px;
+}
+
+/* Styles for stars */
+.rating {
+  font-size: 0;
+}
+.star {
+  font-size: 30px; /* Adjust the size as needed */
+  cursor: pointer;
+}
+.star:hover{
+  color: yellow;
+}
+#form{
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+#button {
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    background-color: var(--navbarcolor);
+    border-radius: 0px 0px 0px 10px;
+    text-decoration: aliceblue ;
+    color: aliceblue;
+}
+.footer-content {
+    background-color: var(--footerColor);
+}
+
+body {
+    background: #212121;
+    color: aliceblue;
+  }
+.container1 {
+    background: #2f2f2f;
+    border-radius: 10px 10px 10px 10px;
+}
+  a:link {
+    text-decoration: none;
+    color: aliceblue;
+  }
+
+  a:visited{
+    text-decoration: none;
+    color: aliceblue;
+  }

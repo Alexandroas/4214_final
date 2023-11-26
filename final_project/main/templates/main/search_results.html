@@ -1,0 +1,24 @@
+{% extends "main/header.html" %}
+{% load static %}
+{% block content %}
+
+<h1>Search Results</h1>
+
+{% if query %}
+    <p>Search results for: "{{ query }}"</p>
+{% else %}
+    <p>No search query provided.</p>
+{% endif %}
+
+<div class="row">
+    {% for product in items %}
+        {% include 'main/product_card.html' %}
+        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+            </div><div class="row">
+        {% endif %}
+    {% empty %}
+        <p>No results found.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
