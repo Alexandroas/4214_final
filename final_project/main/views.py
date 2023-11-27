@@ -7,7 +7,7 @@ from django.db.models import Q
 
 def homepage(request):
     all_products = products.objects.all()
-    paginator = Paginator(all_products, 6)  # Display 6 products per page
+    paginator = Paginator(all_products, 8)  # Display 8 products per page
     page_number = request.GET.get('page')
     try:
         product = paginator.page(page_number)
@@ -16,6 +16,9 @@ def homepage(request):
     except EmptyPage:
         product = paginator.page(paginator.num_pages)
     return render(request, 'main/home.html', {'products': product})  # Pass 'products' instead of 'all_products'
+
+def about(request):
+    return render(request, "main/about.html")
 
 
 def product_detail(request, product_id):
@@ -40,6 +43,17 @@ def filter_products(request):
 
     if category_id:
         productss = productss.filter(category_id=category_id)
+        products_list = [
+        {
+            'name': product.name,
+            'category': product.category.name if product.category else None,
+            'subcategory': product.subcategory.name if product.subcategory else None,
+            'price': product.price,
+            'image_url': product.image.url if product.image else None
+            # Include other attributes as needed
+        }
+        for product in productss
+    ]
     if subcategory_id:
         productss = productss.filter(subcategory_id=subcategory_id)
 

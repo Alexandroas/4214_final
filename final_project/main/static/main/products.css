@@ -1,26 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap");
+
 .product-image {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
-    /* Add more styles as needed */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  height: auto;
+  transition: transform 0.3s ease-in-out;
+  /* Add more styles as needed */
 }
 
-* {
-  font-family: "Istok Web", sans-serif;
-}
-.btn{
+.btn {
   border-radius: 10px 10px 10px 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: #ffce00;
+  background-color: rgb(95, 95, 95);
   color: #000000;
 }
-.btn:hover{
-  background-color:#191919;
+
+.btn:hover {
+  background-color: #191919;
 }
+
 
 .card {
   position: relative;
@@ -32,6 +32,7 @@
   text-decoration: none;
   border-radius: 20px;
   overflow: hidden;
+  transition: 0.3s;
 }
 
 .card::before {
@@ -40,9 +41,12 @@
   top: -50%;
   width: 100%;
   height: 100%;
-  background: #ffce00;
+  background: rgb(95, 95, 95);
   transform: skewY(345deg);
   transition: 0.5s;
+}
+.card:hover {
+  transform: scale(1.1);
 }
 
 .card:hover::before {
@@ -51,7 +55,7 @@
 }
 
 .card::after {
-    content: attr();
+  content: attr();
   position: absolute;
   bottom: 0;
   left: 0;
@@ -72,14 +76,14 @@
 }
 
 .card .imgBox img {
-    max-width: 100%;
-    height: auto;
-    transition: .5s;
+  max-width: 100%;
+  height: auto;
+  transition: .5s;
 }
 
 .card:hover .imgBox img {
-    max-width: 50%;
-      
+  max-width: 50%;
+  transform: scale(1.1);
 }
 
 .card .contentBox {
@@ -108,14 +112,12 @@
   letter-spacing: 1px;
 }
 
-a:link {
-    text-decoration: none;
-    color: aliceblue;
-  }
+#noneall:link {
+  text-decoration: none;
+  color: aliceblue;
+}
 
-  a:visited{
-    text-decoration: none;
-    color: aliceblue;
-  }
-
-
+#noneall {
+  text-decoration: none;
+  color: aliceblue;
+}

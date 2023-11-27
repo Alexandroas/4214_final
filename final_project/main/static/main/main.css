@@ -2,7 +2,9 @@
     --navbarcolor:#313131;
     --footerColor:#313131;
 }
-
+* {
+  font-family: "Gill Sans (sans-serif)";
+}
 .hr {
     color: #8d6060;
     width: 5px;
@@ -31,10 +33,11 @@
 
 .navbar {
     background-color: var(--navbarcolor);
-    border-radius: 0px 0px 0px 10px;
+    border-radius: 0px 0px 0px 20px;
     text-decoration: aliceblue ;
     color: aliceblue;
 }
+
 .footer-content {
     background-color: var(--footerColor);
 }
@@ -43,16 +46,83 @@ body {
     background: #212121;
     color: aliceblue;
   }
-.container1 {
-    background: #2f2f2f;
-    border-radius: 10px 10px 10px 10px;
-}
+
   a:link {
-    text-decoration: none;
-    color: aliceblue;
+    text-decoration:underline;
+    color: white;
   }
 
   a:visited{
-    text-decoration: none;
-    color: aliceblue;
+    text-decoration: underline;
+    color: white;
   }
+
+
+
+/* CSS */
+#button-85 {
+  padding: 0.6em 2em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+#button-85:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+#button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 8px;
+}

@@ -1,9 +1,8 @@
 {% extends "main/header.html" %}
 {% load static %}
 {% block content %}
+<title>Home</title>
 <link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
-
-
 <div class="container">
     <h3 class="text-center" style="margin:10px">WELCOME TO MY STORE!</h3> <br>
     <p> 
@@ -23,7 +22,7 @@
             Enjoy fantastic discounts and special offers that make shopping a delight. 
             Find what you need at prices that fit your budget</p>
         </div>
-        <div class="col-md-6 text-center" style="width:20%">
+        <div class="col-md-6 text-center">
           <h2 >Fast delivery!</h2>
           <p>"Get your items swiftly! 
             Experience lightning-fast delivery services designed for your convenience. 
@@ -36,52 +35,16 @@
 <div class="container1" id="filteredProductsContainer">
     <h1 class="text-center">Products</h1>
     <hr class="solid"></hr>
-    <div id="filteredProductsContainer">
-    <div class="row">
+    <div class="row" id="HI">
         {% for product in products %}
-        <a href="{% url 'products' product_id=product.id %}" id="noneall" class="no-link-highlight">   
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    {% if product.image %}
-                    <div class="imgBox">
-                        <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
-                    </div>
-                    {% else %}
-                        <!-- Display a placeholder image or text if no image is available -->
-                        <span>No Image Available</span>
-                    {% endif %}
-                    <div class="contentBox text-center ">
-                        <h5 class="card-title">{{product.subcategory}} {{product.name }}</h5>
-                        <h6 class="card-title">{{ product.category }}</h6>
-                        <p class="card-text">{{ product.price }}€</p>
-                    </a>
-                        {% if user.is_authenticated %}
-                        <form method="post" action="/rate_product/">
-                            {% csrf_token %}
-                        <div class="rating-stars">
-                            <span class="star" data-value="1">&#9733;</span>
-                            <span class="star" data-value="2">&#9733;</span>
-                            <span class="star" data-value="3">&#9733;</span>
-                            <span class="star" data-value="4">&#9733;</span>
-                            <span class="star" data-value="5">&#9733;</span>
-                            <!-- Add more stars -->
-                            <!--<input type="submit" value="Submit rating"> -->
-                        </div>
-                    </form>
-                    {% else %}
-                        <p>Login to rate this product</p>
-                    {% endif %}
-                          
-                        <!-- Add any other product details you want to display -->
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+            <div class="col-md-3 mb-4"> <!-- Adjust the column width as needed -->
+                {% include 'main/product_card.html' %}
+            </div>  
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
                 </div><div class="row">
             {% endif %}
         {% endfor %}
-    </div>
-</div>
+                </div>
 </div>
 <!-- product_list.html -->
 
@@ -95,7 +58,6 @@
     <select name="subcategory" id="subcategory">
         <option value="">All Subcategories</option>
     </select>
-
     <button type="submit">Filter</button>
 </form>
 
@@ -125,9 +87,6 @@
     </p>
 </div>
 
-<!-- ... (the rest of your code) ... -->
-
-
 <div class="container" style="margin:10px">
     <h1 class="text-center"> Thank you for visiting our store! </h1>
     <p> We want to express our sincere gratitude for visiting our store.
@@ -137,117 +96,8 @@
         We hope your experience was enjoyable, and we eagerly anticipate seeing you again soon.
         Thank you for choosing us; your presence is always valued. Farewell, and have a wonderful day!</p>
 </div>
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Function to fetch categories and subcategories
-        function updatePaginationLinks() {
-            // Reattach event listeners for pagination links
-            $('#pagination-links .page-link').on('click', function(e) {
-                e.preventDefault();
-                var pageUrl = $(this).attr('href');
-                fetchProducts(pageUrl); // Call a function to fetch products based on the URL
-            });
-        }
-
-        function fetchCategoriesAndSubcategories() {
-            $.ajax({
-                url: "{% url 'get_categories_and_subcategories' %}",
-                type: "GET",
-                success: function(response) {
-                    // Populate categories dropdown
-                    response.categories.forEach(function(category) {
-                        $('#category').append($('<option>', {
-                            value: category.id,
-                            text: category.name
-                        }));
-                    });
-    
-                    // Populate subcategories dropdown
-                    response.subcategories.forEach(function(subcategory) {
-                        $('#subcategory').append($('<option>', {
-                            value: subcategory.id,
-                            text: subcategory.name
-                        }));
-                    });
-                },
-                error: function(xhr, errmsg, err) {
-                    console.log(errmsg);
-                    // Handle error if necessary
-                }
-            });
-        }
-        function filterProducts(formData) {
-            $.ajax({
-                url: "{% url 'filter_products' %}",
-                type: "GET",
-                data: formData,
-                success: function(response) {
-                    var filteredProductsContainer = $('#filteredProductsContainer');
-                    filteredProductsContainer.empty(); // Clear previous products in the container
-                
-                    // Create and append product cards to the existing container
-                    response.products.forEach(function(product) {
-                        var productCard =
-                        '<div class="col-md-4 mb-4">' + 
-                            '<div class="card h-100">' +
-                                '<div class= "imgBox">'+
-                            (product.image_url ? '<img class="card-img-top product-image" src="' + product.image_url + '" alt="' + product.name + '">' : '<span>No Image Available</span>') +
-                                    '</div>'+
-                            '<div class="contentBox text-center">' +
-                            '<h5 class="card-title">' + product.subcategory + ' ' + product.name + '</h5>' +
-                            '<h6 class="card-title">' + product.category + '</h6>' +
-                            '<p class="card-text">' + product.price + '€</p>' +
-                            
-                            '</div></div></div>';
-                
-                        filteredProductsContainer.append(productCard);
-                    });
-                },
-                
-                error: function(xhr, errmsg, err) {
-                    console.log(errmsg);
-                    // Handle error if necessary
-                }
-            });
-        }
-        
-    
-        fetchCategoriesAndSubcategories(); // Fetch categories and subcategories on page load
-    
-        $('#filter-form').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
-    
-            var formData = $(this).serialize();
-            filterProducts(formData); // Call the function to filter products
-        });
-        $('#pagination-links').html(response.pagination_html);
-
-            // Reinitialize event listeners for pagination links
-            updatePaginationLinks();
-    });
-    $('.rating-stars .star').on('click', function() {
-        var value = $(this).data('value');
-        var productId = '{{ product.id }}';  // Pass the product ID here
-        var csrfToken = '{{ csrf_token }}';
-        $.ajax({
-            url: '/rate-product/',  // Replace with your rating view URL
-            method: 'POST',
-            data: {
-                'product_id': productId,
-                'stars': value
-            },
-            success: function(response) {
-                // Handle success (e.g., update UI)
-            },
-            error: function(xhr, errmsg, err) {
-                console.log(errmsg);
-                // Handle error if necessary
-            }
-        });
-    });
-    </script>
+    var categoriesUrl = "{% url 'get_categories_and_subcategories' %}";
+    var filterUrl = "{% url 'filter_products' %}" //Assigned var values as links so that js can see them
+</script>
 {% endblock content %}

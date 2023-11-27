@@ -1,9 +1,9 @@
 <!-- product_card.html -->
-{% load static %}
+{%load static%}
 <link rel="stylesheet" type="text/css" href="{% static 'main/products.css' %}">
 <a href="{% url 'products' product_id=product.id %}" id="noneall" class="no-link-highlight">   
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
+    <div class="col-md-4 mb-4" id="CONT">
+        <div class="card">
             {% if product.image %}
             <div class="imgBox">
                 <img class="card-img-top product-image mx-auto" src="{{ product.image.url }}" alt="{{ product.name }}">
