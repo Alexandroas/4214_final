@@ -12,7 +12,7 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <!-- Navbar Left Side -->
                 <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="#about">About</a>
+                    <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
                 </div>
                 <form action="{% url 'search_items' %}" method="GET">
                     <input id = "form" type="text" name="q" placeholder="Search items...">

@@ -44,5 +44,4 @@ class products(models.Model):
 class Rating(models.Model):
     product = models.ForeignKey(products, on_delete=models.CASCADE)
     
-    stars = models.IntegerField(default=0)  # Field to store the rating (e.g., 1 to 5 stars
-# Create your models here.
+    stars = models.IntegerField(default=0)  # Field to store the rating (e.g., 1 to 5 stars)

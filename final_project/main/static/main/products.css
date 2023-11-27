@@ -29,7 +29,6 @@
   width: 220px;
   height: 340px;
   background: #191919;
-  text-decoration: none;
   border-radius: 20px;
   overflow: hidden;
   transition: 0.3s;
@@ -41,12 +40,14 @@
   top: -50%;
   width: 100%;
   height: 100%;
-  background: rgb(95, 95, 95);
+  background: rgb(65, 65, 65);
+  color: yellow;
   transform: skewY(345deg);
   transition: 0.5s;
 }
 .card:hover {
   transform: scale(1.1);
+  color: rgb(255, 187, 0);
 }
 
 .card:hover::before {
