@@ -18,18 +18,15 @@
                 <p class="card-text">{{ product.price }}€</p>
                 <!-- Add your rating stars and login message here -->
                 {% if user.is_authenticated %}
-                <form method="post" action="/rate-product/">
-                    {% csrf_token %}
+                <div class="container">
                     <div class="rating-stars">
                         <span class="star" data-value="1">&#9733;</span>
                         <span class="star" data-value="2">&#9733;</span>
                         <span class="star" data-value="3">&#9733;</span>
                         <span class="star" data-value="4">&#9733;</span>
                         <span class="star" data-value="5">&#9733;</span>
-                        <!-- Add more stars -->
-                        <!--<input type="submit" value="Submit rating"> -->
                     </div>
-                </form>
+                </div>
                 {% else %}
                     <p>Login to rate this product</p>
                 {% endif %}

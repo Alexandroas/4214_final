@@ -84,23 +84,3 @@ $(document).ready(function () {
     // Reinitialize event listeners for pagination links
     updatePaginationLinks();
 });
-$('.rating-stars .star').on('click', function () {
-    var value = $(this).data('value');
-    var productId = '{{ product.id }}';  // Pass the product ID here
-    var csrfToken = '{{ csrf_token }}';
-    $.ajax({
-        url: '/rate-product/',  // Replace with your rating view URL
-        method: 'POST',
-        data: {
-            'product_id': productId,
-            'stars': value
-        },
-        success: function (response) {
-            // Handle success (e.g., update UI)
-        },
-        error: function (xhr, errmsg, err) {
-            console.log(errmsg);
-            // Handle error if necessary
-        }
-    });
-});
