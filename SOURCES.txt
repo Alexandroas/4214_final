@@ -9,3 +9,8 @@ https://codepen.io/sam_garcia2/pen/PozpPRy
 
 Footer idea from Group project Of constantine macris and i
 https://github.com/macrisconstantine/bootstrap-group-coursework
+
+Rating system code
+https://medium.com/geekculture/django-implementing-star-rating-e1deff03bb1c
+
+Of course ChatGPT used
