@@ -1,6 +1,6 @@
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render,get_object_or_404
-from .models import products, subCategory, Category, Rating
+from .models import Rating, products, subCategory, Category
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.db.models import Q
@@ -15,7 +15,7 @@ def homepage(request):
         product = paginator.page(1)
     except EmptyPage:
         product = paginator.page(paginator.num_pages)
-    return render(request, 'main/home.html', {'products': product})  # Pass 'products' instead of 'all_products'
+    return render(request, 'main/home.html', {'products': product})
 
 def about(request):
     return render(request, "main/about.html")
@@ -48,7 +48,7 @@ def filter_products(request):
             'name': product.name,
             'category': product.category.name if product.category else None,
             'subcategory': product.subcategory.name if product.subcategory else None,
-            'price': product.price,
+            'price': product.price, #i know repeating code is not a good practise
             'image_url': product.image.url if product.image else None
             # Include other attributes as needed
         }
@@ -70,18 +70,6 @@ def filter_products(request):
     ]
 
     return JsonResponse({'products': products_list})
-
-def rate_product(request):
-    if request.method == 'POST' and request.user.is_authenticated:
-        product_id = request.POST.get('product_id')
-        stars = request.POST.get('stars')
-
-        # Save the rating for the product by the authenticated user
-        Rating.objects.create(product_id=product_id, user=request.user, stars=stars)
-
-        return JsonResponse({'message': 'Rating saved successfully!'})
-    else:
-        return JsonResponse({'error': 'Invalid request or user not authenticated.'}, status=400)
     
 def search_items(request): #search view to search products based on name or category
     query = request.GET.get('q')
@@ -95,3 +83,16 @@ def search_items(request): #search view to search products based on name or cate
         items = products.objects.none()  # Return an empty queryset if no query provided
 
     return render(request, 'main/search_results.html', {'items': items, 'query': query})
+
+def index(request: HttpRequest) -> HttpResponse:
+    productss = products.objects.all()
+    for Product in productss:
+        rating = Rating.objects.filter(product=Product, user=request.user).first()
+        Product.user_rating = rating.rating if rating else 0
+    return render(request, "main/home.html", {"productss": productss})
+
+def rate(request: HttpRequest, products_id: int, rating: int) -> HttpResponse:
+    products_obj = products.objects.get(id=products_id)
+    Rating.objects.filter(product=products_obj, user=request.user).delete()
+    products_obj.rating_set.create(user=request.user, rating=rating)
+    return index(request)
