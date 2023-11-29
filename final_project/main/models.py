@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from tinymce.models import HTMLField
 from django.utils.text import slugify
 import uuid
@@ -23,9 +24,16 @@ class products(models.Model):
     subcategory = models.ForeignKey(subCategory, on_delete=models.CASCADE, null=True, blank=True)
     product_slug = models.SlugField("Product Slug", null=False, blank=False, unique=True)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True)
-
+    
+    def average_rating(self) -> float:
+        return Rating.objects.filter(product=self).aggregate(Avg("rating"))["rating__avg"] or 0
+    
+    def __str__(self):
+        return f"{self.header}: {self.average_rating()}"
     class Meta:
         ordering=['price']
+    def __str__(self):
+        return f"{self.header}: {self.average_rating()}"
         
     def save(self, *args, **kwargs):
         # If the product doesn't have a slug or is being updated
@@ -39,9 +47,11 @@ class products(models.Model):
 
     def __str__(self):
         return self.name
-    
-    
+        
 class Rating(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     product = models.ForeignKey(products, on_delete=models.CASCADE)
-    
-    stars = models.IntegerField(default=0)  # Field to store the rating (e.g., 1 to 5 stars)
+    rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.product.header}: {self.rating}"
