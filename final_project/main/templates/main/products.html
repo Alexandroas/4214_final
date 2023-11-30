@@ -18,11 +18,11 @@
             <h5 class="card-title">{{ product.name }}</h5>
             <h6 class="card-title">{{ product.category }} </h6>
             <h2 class="card-text"><b>Product price: {{ product.price }}$</b></h2>
-            <h5 class="card-title">Avg rating:
+            <h5 class="card-title"><b>Avg rating:</b>
                 <span class="fa fa-star {% if product.average_rating > 0 %} checked {% endif %}"></span>
                 <span class="fa fa-star {% if product.average_rating > 1 %} checked {% endif %}"></span>
                 <span class="fa fa-star {% if product.average_rating > 2 %} checked {% endif %}"></span>
-                <span class="fa fa-star {% if product.average_rating > 3 %} checked {% endif %}" ></span>
+                <span class="fa fa-star {% if product.average_rating > 3 %} checked {% endif %}"></span>
                 <span class="fa fa-star {% if product.average_rating > 4 %} checked {% endif %}"></span>
             </h5>
             <div class="containerRating">
